@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import Card from './Card'
+import userEvent from '@testing-library/user-event'
 
 describe('Card', () => {
   it('renders title and text', () => {
@@ -12,5 +13,11 @@ describe('Card', () => {
     expect(screen.queryByText(/bar/i)).toBeInTheDocument()
   })
 
-  it.todo('calls onShowText on button click')
+  it('calls onShowText on button click', () => {
+    const onShowTextCallback = jest.fn()
+    render(<Card onShowText={onShowTextCallback} title="Foo" text="Bar" />)
+    const button = screen.getByRole('button', { name: /show text/i })
+    userEvent.click(button)
+    expect(onShowTextCallback).toHaveBeenCalled()
+  })
 })
